@@ -1,0 +1,365 @@
+@import "tailwindcss";
+
+/*
+ * Vantremont design tokens: Claret and Ivory.
+ *
+ * Flat color only. Claret carries the brand on light grounds, ink carries the dark
+ * bands, ivory is the page. Brass is for small details on dark grounds only.
+ * Contrast (WCAG 2): ink on ivory 17:1; body on ivory 10.7:1; claret on ivory 9.2:1;
+ * slate on ivory 5.4:1; ivory on claret 9.2:1; rose on ink 10.7:1; brass on ink 5.6:1;
+ * stone-text on ink 8.7:1. Brass on ivory is 3:1, so it never carries text there.
+ */
+@theme {
+  --font-sans: var(--font-hanken), ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  --font-serif: var(--font-newsreader), Georgia, "Times New Roman", serif;
+
+  --color-claret: #7a1f2b;
+  --color-claret-deep: #5a1520;
+  --color-ink: #14110f;
+  --color-ink-soft: #221d1a;
+  --color-ivory: #f7f3ec;
+  --color-sand: #efe8dc;
+  --color-paper: #ffffff;
+  --color-stone: #e4ddd1;
+  --color-stone-dark: #cfc6b8;
+  --color-slate: #5e6470;
+  --color-body: #3b3732;
+  --color-brass: #a9875a;
+
+  /* Text and lines on dark (ink and claret) grounds. */
+  --color-rose: #e9b7bd;
+  --color-fog: #b8afa3;
+  --color-line-dark: #3a332e;
+
+  /* Shadows tinted toward the warm ink. */
+  --shadow-card: 0 1px 2px rgba(20, 17, 15, 0.05), 0 10px 28px -16px rgba(20, 17, 15, 0.22);
+  --shadow-lift: 0 1px 2px rgba(20, 17, 15, 0.07), 0 22px 44px -22px rgba(20, 17, 15, 0.34);
+
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-padding-top: 6rem;
+    color-scheme: light;
+    -webkit-tap-highlight-color: rgba(122, 31, 43, 0.12);
+  }
+
+  @media (pointer: fine) {
+    html {
+      overscroll-behavior: none;
+    }
+  }
+
+  body {
+    background: var(--color-ivory);
+    color: var(--color-body);
+    font-family: var(--font-sans);
+    font-size: 1.0625rem;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    font-feature-settings: "ss01", "cv11";
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    color: var(--color-ink);
+    text-wrap: balance;
+  }
+
+  h2[id],
+  h3[id],
+  section[id] {
+    scroll-margin-top: 6rem;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  a,
+  button,
+  summary,
+  input,
+  select,
+  textarea,
+  label {
+    touch-action: manipulation;
+  }
+
+  ::selection {
+    background: var(--color-claret);
+    color: var(--color-ivory);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-claret);
+    outline-offset: 3px;
+    border-radius: 1px;
+  }
+
+  .on-dark :focus-visible,
+  .on-dark:focus-visible {
+    outline-color: var(--color-rose);
+  }
+
+  select {
+    background-color: var(--color-paper);
+    color: var(--color-ink);
+  }
+
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+@layer components {
+  .container-page {
+    width: 100%;
+    max-width: 84rem;
+    margin-inline: auto;
+    padding-inline: 1.25rem;
+  }
+  @media (min-width: 640px) {
+    .container-page {
+      padding-inline: 2rem;
+    }
+  }
+  @media (min-width: 1280px) {
+    .container-page {
+      padding-inline: 3rem;
+    }
+  }
+
+  /*
+   * Display type. Newsreader is set with optical sizing, so large headings get the
+   * high-contrast display cut and small ones stay sturdy.
+   */
+  .display {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    font-optical-sizing: auto;
+    letter-spacing: -0.018em;
+    line-height: 1.04;
+  }
+  /* One emphasized phrase per page at most, set in claret. Upright: no italic file is loaded. */
+  .display-em {
+    color: var(--color-claret);
+  }
+
+  /*
+   * Section index: a numbered label with a short rule, like the running heads in a
+   * printed report. Used once per section, never stacked.
+   */
+  .index-label {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.75rem;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-claret);
+  }
+  .index-label > .num {
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.06em;
+    color: var(--color-slate);
+  }
+  .on-dark .index-label {
+    color: var(--color-rose);
+  }
+  .on-dark .index-label > .num {
+    color: var(--color-fog);
+  }
+
+  .rule {
+    border-top: 1px solid var(--color-stone-dark);
+  }
+  .on-dark .rule {
+    border-color: var(--color-line-dark);
+  }
+
+  /* Underline that draws from the left on hover. Animates transform only. */
+  .link-underline {
+    position: relative;
+  }
+  .link-underline::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -2px;
+    height: 1px;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform 0.35s var(--ease-out-soft);
+  }
+  .link-underline:hover::after,
+  .group:hover .link-underline::after,
+  .group:focus-visible .link-underline::after {
+    transform: scaleX(1);
+  }
+
+  /* Inline links inside running text. */
+  .text-link {
+    color: var(--color-claret);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+    transition: color 0.2s ease;
+  }
+  .text-link:hover {
+    color: var(--color-claret-deep);
+  }
+  .on-dark .text-link {
+    color: var(--color-rose);
+  }
+  .on-dark .text-link:hover {
+    color: var(--color-ivory);
+  }
+
+  /*
+   * Hover and press feedback. A linked card lifts 2px; a photo zooms 1.03 inside its
+   * frame; buttons press on click. Only transform, box-shadow and border-color move.
+   */
+  .card-link {
+    transition:
+      transform 0.25s var(--ease-out-soft),
+      box-shadow 0.25s var(--ease-out-soft),
+      border-color 0.25s var(--ease-out-soft);
+  }
+  @media (hover: hover) {
+    .card-link:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lift);
+      border-color: var(--color-stone-dark);
+    }
+  }
+  .photo-zoom {
+    transition: transform 0.6s var(--ease-out-soft);
+  }
+  @media (hover: hover) {
+    .group:hover .photo-zoom {
+      transform: scale(1.03);
+    }
+  }
+  .press {
+    transition:
+      transform 0.15s var(--ease-out-soft),
+      background-color 0.2s ease,
+      border-color 0.2s ease,
+      color 0.2s ease;
+  }
+  .press:active {
+    transform: scale(0.97);
+  }
+  .arrow-nudge {
+    transition: transform 0.25s var(--ease-out-soft);
+  }
+  .group:hover .arrow-nudge,
+  .group:focus-visible .arrow-nudge {
+    transform: translateX(3px);
+  }
+
+  .no-scrollbar {
+    scrollbar-width: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Long-form text: legal pages, role descriptions. */
+  .prose-body h2 {
+    font-family: var(--font-serif);
+    font-size: 1.75rem;
+    font-weight: 400;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    margin-top: 2.75rem;
+    margin-bottom: 0.875rem;
+  }
+  .prose-body h3 {
+    font-weight: 600;
+    color: var(--color-ink);
+    margin-top: 1.75rem;
+    margin-bottom: 0.5rem;
+  }
+  .prose-body p,
+  .prose-body ul,
+  .prose-body ol {
+    margin-bottom: 1rem;
+  }
+  .prose-body ul {
+    list-style: none;
+    padding-left: 0;
+  }
+  .prose-body ul > li {
+    position: relative;
+    padding-left: 1.25rem;
+    margin-bottom: 0.45rem;
+  }
+  .prose-body ul > li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.72em;
+    width: 0.5rem;
+    height: 1px;
+    background: var(--color-claret);
+  }
+  .prose-body ol {
+    list-style: decimal;
+    padding-left: 1.25rem;
+  }
+  .prose-body a {
+    color: var(--color-claret);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .prose-body strong {
+    color: var(--color-ink);
+    font-weight: 600;
+  }
+}
+
+/* Menu entrances. Plain CSS, so no animation library ships with every page. */
+@keyframes menu-in {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.menu-in {
+  animation: menu-in 0.18s var(--ease-out-soft) both;
+}
+.fade-in {
+  animation: fade-in 0.18s ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

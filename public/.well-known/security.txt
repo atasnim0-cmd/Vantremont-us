@@ -1,0 +1,5 @@
+Contact: mailto:security@vantremont.com
+Expires: 2027-10-31T23:59:59.000Z
+Preferred-Languages: en
+Canonical: https://vantremont.com/.well-known/security.txt
+Policy: https://vantremont.com/legal#security

@@ -1,0 +1,10 @@
+.next
+node_modules
+package-lock.json
+public
+next-env.d.ts
+docs/reference
+src/content/us-map.ts
+CLAUDE.md
+AGENTS.md
+shots

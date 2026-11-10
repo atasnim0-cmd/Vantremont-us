@@ -1,0 +1,46 @@
+{
+  "name": "vantremont-website",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Website for Vantremont (vantremont.com)",
+  "engines": {
+    "node": ">=20.9.0"
+  },
+  "scripts": {
+    "dev": "next dev",
+    "prebuild": "node scripts/check-copy.mjs && node scripts/check-launch.mjs",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint",
+    "typecheck": "next typegen && tsc --noEmit",
+    "format": "prettier --write .",
+    "check:copy": "node scripts/check-copy.mjs",
+    "check:launch": "node scripts/check-launch.mjs --force",
+    "ci": "npm run check:copy && npm run lint && npm run typecheck && npm run build",
+    "check:visual": "node scripts/visual-check.mjs"
+  },
+  "dependencies": {
+    "@vercel/analytics": "2.0.1",
+    "animejs": "4.5.0",
+    "lucide-react": "1.61.0",
+    "next": "16.4.2",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "resend": "6.34.1",
+    "server-only": "0.0.1",
+    "zod": "4.6.7"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "4.14.0",
+    "@playwright/test": "1.64.1",
+    "@tailwindcss/postcss": "4.3.3",
+    "@types/node": "20.19.43",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "eslint": "9.39.5",
+    "eslint-config-next": "16.4.2",
+    "prettier": "3.9.10",
+    "tailwindcss": "4.3.3",
+    "typescript": "5.9.3"
+  }
+}
