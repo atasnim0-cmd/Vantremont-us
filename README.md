@@ -121,7 +121,7 @@ To add a service, add an entry to `services.ts`. Its page, menu entry, sitemap e
 
 **Copy check** (`scripts/check-copy.mjs`). Copy, code comments and docs must not contain em dashes, en dashes, ellipsis characters, curly quotes or the stock marketing phrases listed in the script. Copy is written in American English.
 
-**Launch check** (`scripts/check-launch.mjs`). Lists every inline `LAUNCH-PLACEHOLDER` and `LAUNCH-CONFIRM` marker under `src`, any missing environment variable, and a `security.txt` close to expiry. It is enforced only on production builds served on vantremont.com, so previews keep working while content is still being confirmed. See [docs/LAUNCH_CHECKLIST.md](docs/LAUNCH_CHECKLIST.md).
+**Launch check** (`scripts/check-launch.mjs`). Lists every inline `LAUNCH-PLACEHOLDER` and `LAUNCH-CONFIRM` marker under `src`, any missing environment variable, and a `security.txt` close to expiry. It is enforced only on production builds served on vantremont.com with `SITE_LAUNCHED=true`, so previews and the soft launch keep working while content is still being confirmed. See [docs/LAUNCH_CHECKLIST.md](docs/LAUNCH_CHECKLIST.md).
 
 **Static rendering.** The root layout sets `ensureStatic = "navigation"`, so the build fails if any page would render per request.
 

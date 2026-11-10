@@ -25,10 +25,15 @@ The site deploys to Vercel from GitHub. Pushes to `main` go to production; every
 
 1. In Vercel, **Settings, Domains**, add `vantremont.com` and `www.vantremont.com`. Make the apex the primary domain and redirect `www` to it.
 2. At the DNS provider, create the records Vercel shows (an A record for the apex and a CNAME for `www`).
-3. Once the domain is attached, Vercel sets `VERCEL_PROJECT_PRODUCTION_URL` to it. From then on:
+3. Once the domain is attached, Vercel sets `VERCEL_PROJECT_PRODUCTION_URL` to it. That alone is a **soft launch**: the domain serves the site, but it stays out of search engines, forms log submissions if email is not configured, and the launch check is not enforced.
+4. **Full launch:** when every item in the launch checklist is done, add `SITE_LAUNCHED=true` under **Settings, Environment Variables** (Production only) and redeploy. From then on:
    - `npm run check:launch` is enforced on every production build, so placeholders block the deploy;
    - the site is open to search engines;
    - forms fail visibly if email is not configured.
+
+### DNS on Cloudflare
+
+Create the records Vercel shows under **Settings, Domains** and set each one to **DNS only** (grey cloud). Vercel issues and renews the TLS certificate itself, and the Cloudflare proxy would get in the way. If the zone uses Cloudflare's SSL/TLS settings, keep them at **Full (strict)** in case a record is ever proxied.
 
 ## 4. Email (Resend)
 

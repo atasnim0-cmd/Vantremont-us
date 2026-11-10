@@ -3,10 +3,9 @@
  * Pre-launch gate.
  *
  * Runs before every build. It only enforces on Vercel production deployments served
- * on the live domain (vantremont.com). Local builds, previews and production builds on
- * the temporary vercel.app address keep working while placeholders are still in place.
- * Vercel sets VERCEL_PROJECT_PRODUCTION_URL to the custom domain once it is added,
- * which switches enforcement on automatically. Run it manually with:
+ * on the live domain (vantremont.com) with SITE_LAUNCHED=true. Local builds, previews,
+ * the vercel.app address and the soft launch (domain attached, SITE_LAUNCHED not set)
+ * keep working while placeholders are still in place. Run it manually with:
  *
  *   npm run check:launch
  *
@@ -24,11 +23,12 @@ import { join, relative } from "node:path";
 const force = process.argv.includes("--force");
 const LIVE_DOMAIN = "vantremont.com";
 const onLiveDomain = (process.env.VERCEL_PROJECT_PRODUCTION_URL ?? "").replace(/^www\./, "") === LIVE_DOMAIN;
-const enforce = force || (process.env.VERCEL_ENV === "production" && onLiveDomain);
+const launched = process.env.SITE_LAUNCHED === "true";
+const enforce = force || (process.env.VERCEL_ENV === "production" && onLiveDomain && launched);
 
 if (!enforce) {
   console.log(
-    "Launch check skipped (not a production build on the live domain). Run `npm run check:launch` to check manually.",
+    "Launch check skipped (not a launched production build: needs vantremont.com and SITE_LAUNCHED=true). Run `npm run check:launch` to check manually.",
   );
   process.exit(0);
 }
